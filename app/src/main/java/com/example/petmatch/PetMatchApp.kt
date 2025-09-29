@@ -57,6 +57,14 @@ fun PetMatchApp() {
                 onBackClick = { navController.popBackStack() }
             )
         }
+        composable(route="swipeMenu") {
+
+            swipeMenu(
+
+
+            )
+
+        }
     }
 }
 
