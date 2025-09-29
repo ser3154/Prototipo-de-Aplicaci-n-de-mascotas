@@ -38,7 +38,8 @@ val DarkText = Color(0xFF2D2D2D)
 fun MascotaScreen(
     onBackClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
-    onMenuClick: () -> Unit = {}
+    onMenuClick: () -> Unit = {},
+    onNextClick: () -> Unit = {}
 ) {
     var nombre by remember { mutableStateOf("") }
     var raza by remember { mutableStateOf("") }
@@ -168,7 +169,17 @@ fun MascotaScreen(
         )
 
         Spacer(modifier = Modifier.weight(1f))
-
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = onBackClick, modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                Text("Atrás")
+            }
+            Button(onClick = onNextClick, modifier = Modifier.weight(1f).padding(start = 8.dp)) {
+                Text("Siguiente")
+            }
+        }
         // Barra de navegación inferior
         BottomNavigationBar(
             onBackClick = onBackClick,

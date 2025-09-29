@@ -27,3 +27,4 @@ fun ProfileScreen() {
         Text("👤 Perfil")
     }
 }
+

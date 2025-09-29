@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
+import com.example.petmatch.PetSwipeScreen
 // Colores personalizados
 val PinkBackground = Color(0xFFFFB3BA)
 val DarkText = Color(0xFF2D2D2D)
@@ -59,10 +59,27 @@ fun PetMatchApp() {
         }
         composable(route="swipeMenu") {
 
+            PetSwipeScreen(
+                onConfigClick = {navController.navigate("config")},
+                onMatchesClick={navController.navigate("matches")},
+                onProfileClick = {navController.navigate("profile")}
+            )
 
+        }
 
+        composable (route="s"){
 
+            ConfigScreen()
+        }
 
+        composable(route="match"){
+
+            MatchesScreen()
+        }
+
+        composable(route="profile"){
+
+            ProfileScreen()
         }
     }
 }
