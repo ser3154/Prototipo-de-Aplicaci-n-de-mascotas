@@ -26,14 +26,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.petapp.ui.screens.MascotaScreen
+import com.example.petapp.ui.screens.RegistroUsuarioScreen
 
 // Colores personalizados
 val PinkBackground = Color(0xFFFFB3BA)
 val DarkText = Color(0xFF2D2D2D)
 
-// Pantalla principal con navegación
+// Pantalla principal con navegación simplificada
 @Composable
-fun PetMatchApp() {
+fun SimplePetMatchApp() {
     val navController = rememberNavController()
 
     NavHost(
@@ -46,21 +48,21 @@ fun PetMatchApp() {
         composable("login") {
             LoginScreen(navController)
         }
-        composable("register") {
-            RegistroUsuarioScreen(
-                onCancelClick = { navController.popBackStack() },
-                onNextClick = { navController.navigate("mascota") }
-            )
-        }
         composable("mascota") {
             MascotaScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
+        composable("registro") {
+            RegistroUsuarioScreen(
+                onCancelClick = { navController.popBackStack() },
+                onNextClick = { navController.navigate("mascota") }
+            )
+        }
     }
 }
 
-// Pantalla de bienvenida (Primera imagen)
+// Pantalla de bienvenida
 @Composable
 fun WelcomeScreen(navController: NavController) {
     Column(
@@ -100,7 +102,7 @@ fun WelcomeScreen(navController: NavController) {
 
         // Botón Crear una Cuenta
         Button(
-            onClick = { navController.navigate("register") },
+            onClick = { navController.navigate("registro") },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -109,7 +111,7 @@ fun WelcomeScreen(navController: NavController) {
                 contentColor = DarkText
             ),
             shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(2.dp, DarkText)
+            border = androidx.compose.foundation.BorderStroke(2.dp, DarkText)
         ) {
             Text(
                 text = "Crear una Cuenta",
@@ -131,7 +133,7 @@ fun WelcomeScreen(navController: NavController) {
                 contentColor = DarkText
             ),
             shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(2.dp, DarkText)
+            border = androidx.compose.foundation.BorderStroke(2.dp, DarkText)
         ) {
             Text(
                 text = "Iniciar Sesion",
@@ -143,7 +145,7 @@ fun WelcomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f))
 
         // Barra de navegación inferior
-        BottomNavigationBar(
+        SimpleBottomNavigationBar(
             onBackClick = { /* No action for welcome screen */ },
             onHomeClick = { /* Already at home */ },
             onMenuClick = { /* Menu action */ }
@@ -151,7 +153,7 @@ fun WelcomeScreen(navController: NavController) {
     }
 }
 
-// Pantalla de inicio de sesión (Segunda imagen)
+// Pantalla de inicio de sesión
 @Composable
 fun LoginScreen(navController: NavController) {
     var usuario by remember { mutableStateOf("") }
@@ -196,13 +198,13 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            CustomTextField(
+            SimpleTextField(
                 label = "Usuario",
                 value = usuario,
                 onValueChange = { usuario = it }
             )
 
-            CustomTextField(
+            SimpleTextField(
                 label = "Contraseña",
                 value = contrasena,
                 onValueChange = { contrasena = it }
@@ -211,10 +213,27 @@ fun LoginScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botones de inicio de sesión
+        // Botón de iniciar sesión normal
+        Button(
+            onClick = { navController.navigate("mascota") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = DarkText,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text("Iniciar Sesión")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botones de redes sociales
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Botón Google
             OutlinedButton(
@@ -226,7 +245,7 @@ fun LoginScreen(navController: NavController) {
                     containerColor = Color.White,
                     contentColor = DarkText
                 ),
-                border = BorderStroke(1.dp, DarkText),
+                border = androidx.compose.foundation.BorderStroke(1.dp, DarkText),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Iniciar Sesion con Google")
@@ -242,7 +261,7 @@ fun LoginScreen(navController: NavController) {
                     containerColor = Color.White,
                     contentColor = DarkText
                 ),
-                border = BorderStroke(1.dp, DarkText),
+                border = androidx.compose.foundation.BorderStroke(1.dp, DarkText),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Iniciar Sesion con Facebook")
@@ -252,7 +271,7 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f))
 
         // Barra de navegación inferior
-        BottomNavigationBar(
+        SimpleBottomNavigationBar(
             onBackClick = { navController.popBackStack() },
             onHomeClick = { navController.navigate("welcome") },
             onMenuClick = { /* Menu action */ }
@@ -260,358 +279,9 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-// Las funciones MascotaScreen y RegistroUsuarioScreen que ya tienes
+// TextField simplificado para evitar conflictos
 @Composable
-fun MascotaScreen(
-    onBackClick: () -> Unit = {},
-    onHomeClick: () -> Unit = {},
-    onMenuClick: () -> Unit = {}
-) {
-    var nombre by remember { mutableStateOf("") }
-    var raza by remember { mutableStateOf("") }
-    var especie by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(PinkBackground)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Título
-        Text(
-            text = "Mascota",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = DarkText,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
-
-        // Iconos de mascota
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(vertical = 16.dp)
-        ) {
-            // Icono de perro (seleccionado)
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFFFA500))
-                    .border(3.dp, DarkText, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🐕",
-                    fontSize = 32.sp
-                )
-            }
-
-            // Icono de gato
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .border(2.dp, Color.Gray, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🐱",
-                    fontSize = 32.sp
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Campos de texto
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            CustomTextField(
-                label = "Nombre",
-                value = nombre,
-                onValueChange = { nombre = it }
-            )
-
-            CustomTextField(
-                label = "Raza",
-                value = raza,
-                onValueChange = { raza = it }
-            )
-
-            CustomTextField(
-                label = "Especie",
-                value = especie,
-                onValueChange = { especie = it }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Sección de validación
-        Text(
-            text = "Validación",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-            color = DarkText,
-            modifier = Modifier.align(Alignment.Start)
-        )
-
-        Box(
-            modifier = Modifier
-                .size(60.dp)
-                .background(Color.White, RoundedCornerShape(8.dp))
-                .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "📷", fontSize = 24.sp)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo descripción
-        Text(
-            text = "Descripción",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-            color = DarkText,
-            modifier = Modifier.align(Alignment.Start)
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(Color.White, RoundedCornerShape(8.dp))
-                .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        // Barra de navegación inferior
-        BottomNavigationBar(
-            onBackClick = onBackClick,
-            onHomeClick = onHomeClick,
-            onMenuClick = onMenuClick
-        )
-    }
-}
-
-@Composable
-fun RegistroUsuarioScreen(
-    onCancelClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
-    onBackClick: () -> Unit = {},
-    onHomeClick: () -> Unit = {},
-    onMenuClick: () -> Unit = {}
-) {
-    var nombreCompleto by remember { mutableStateOf("") }
-    var edad by remember { mutableStateOf("") }
-    var fechaNacimiento by remember { mutableStateOf("") }
-    var noCel by remember { mutableStateOf("") }
-    var ciudad by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(PinkBackground)
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Título
-        Text(
-            text = "Registro Usuario",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = DarkText,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
-
-        // Iconos de usuario
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(vertical = 16.dp)
-        ) {
-            // Icono de persona
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFFFA500))
-                    .border(3.dp, DarkText, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "👤",
-                    fontSize = 32.sp
-                )
-            }
-
-            // Icono de mascota
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .border(2.dp, Color.Gray, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🐱",
-                    fontSize = 32.sp
-                )
-            }
-        }
-
-        // Puntos indicadores
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.padding(vertical = 8.dp)
-        ) {
-            repeat(5) { index ->
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(if (index == 0) DarkText else Color.Gray)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Campos de texto
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            CustomTextField(
-                label = "Nombre Completo",
-                value = nombreCompleto,
-                onValueChange = { nombreCompleto = it }
-            )
-
-            CustomTextField(
-                label = "Edad",
-                value = edad,
-                onValueChange = { edad = it }
-            )
-
-            // Fecha de nacimiento con icono
-            Column {
-                Text(
-                    text = "Fecha de Nacimiento",
-                    fontSize = 14.sp,
-                    color = DarkText,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                            .background(Color.White, RoundedCornerShape(8.dp))
-                            .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-                            .padding(horizontal = 12.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Text(
-                            text = fechaNacimiento.ifEmpty { "DD/MM/YYYY" },
-                            color = if (fechaNacimiento.isEmpty()) Color.Gray else DarkText
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color.White, RoundedCornerShape(8.dp))
-                            .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "📅", fontSize = 16.sp)
-                    }
-                }
-            }
-
-            CustomTextField(
-                label = "No. Cel",
-                value = noCel,
-                onValueChange = { noCel = it }
-            )
-
-            CustomTextField(
-                label = "Ciudad",
-                value = ciudad,
-                onValueChange = { ciudad = it }
-            )
-
-            CustomTextField(
-                label = "Estado",
-                value = estado,
-                onValueChange = { estado = it }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Botones
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            OutlinedButton(
-                onClick = onCancelClick,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = DarkText
-                ),
-                border = BorderStroke(1.dp, DarkText)
-            ) {
-                Text("Cancelar")
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = onNextClick,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = DarkText,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Siguiente")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Barra de navegación inferior
-        BottomNavigationBar(
-            onBackClick = onBackClick,
-            onHomeClick = onHomeClick,
-            onMenuClick = onMenuClick
-        )
-    }
-}
-
-@Composable
-fun CustomTextField(
+fun SimpleTextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
@@ -639,7 +309,7 @@ fun CustomTextField(
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                textStyle = TextStyle(
+                textStyle = androidx.compose.ui.text.TextStyle(
                     color = DarkText,
                     fontSize = 16.sp
                 )
@@ -648,8 +318,9 @@ fun CustomTextField(
     }
 }
 
+// Barra de navegación simplificada para evitar conflictos
 @Composable
-fun BottomNavigationBar(
+fun SimpleBottomNavigationBar(
     onBackClick: () -> Unit,
     onHomeClick: () -> Unit,
     onMenuClick: () -> Unit
@@ -658,14 +329,14 @@ fun BottomNavigationBar(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        NavigationButton(text = "←", onClick = onBackClick)
-        NavigationButton(text = "🏠", onClick = onHomeClick)
-        NavigationButton(text = "☰", onClick = onMenuClick)
+        SimpleNavigationButton(text = "←", onClick = onBackClick)
+        SimpleNavigationButton(text = "🏠", onClick = onHomeClick)
+        SimpleNavigationButton(text = "☰", onClick = onMenuClick)
     }
 }
 
 @Composable
-fun NavigationButton(
+fun SimpleNavigationButton(
     text: String,
     onClick: () -> Unit
 ) {
