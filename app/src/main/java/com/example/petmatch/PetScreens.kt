@@ -30,16 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
 // Colores personalizados
 val PinkBackground = Color(0xFFFFB3BA)
 val DarkText = Color(0xFF2D2D2D)
 
 @Composable
 fun MascotaScreen(
-    onBackClick: () -> Unit = {},
+    onBackClick: () -> Unit ,
     onHomeClick: () -> Unit = {},
     onMenuClick: () -> Unit = {},
-    onNextClick: () -> Unit = {}
+    onNextClick: () -> Unit
 ) {
     var nombre by remember { mutableStateOf("") }
     var raza by remember { mutableStateOf("") }
@@ -192,7 +193,7 @@ fun MascotaScreen(
 @Composable
 fun RegistroUsuarioScreen(
     onCancelClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
+    onNextClick: () -> Unit ={},
     onBackClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onMenuClick: () -> Unit = {}
@@ -494,7 +495,10 @@ fun NavigationButton(
 @Preview(showBackground = true)
 @Composable
 fun MascotaScreenPreview() {
-    MascotaScreen()
+    MascotaScreen(
+        onNextClick = {},
+        onBackClick = {}
+    )
 }
 
 @Preview(showBackground = true)

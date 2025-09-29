@@ -21,8 +21,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -41,6 +44,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.petapp.ui.screens.DarkText
 import com.example.petapp.ui.screens.PinkBackground
+import kotlin.math.abs
 
 
 @Composable
@@ -61,97 +65,182 @@ fun PetScreen(navController: NavController) {
     )
 }
 @Composable
-fun PetSwipeScreen(
-    onConfigClick: () -> Unit,
-    onMatchesClick: () -> Unit,
-    onProfileClick: () -> Unit
+fun SwipeableCard(
+    petName: String,
+    petEmoji: String,
+    petAge: String,
+    petOwner: String,
+    petDescription: String,
+    petColor: Color,
+    petTags: List<String>,
+    petDistance: String,
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit
 ) {
-    var currentPet by remember { mutableStateOf(0) }
-    val pets = listOf(
-        Pair("Doggo", "🐶"),
-        Pair("Kitty", "🐱"),
-        Pair("Bunny", "🐰")
-    )
+    var offsetX by remember { mutableStateOf(0f) }
+    var rotation by remember { mutableStateOf(0f) }
+
+    val swipeThreshold = 300f
+
+    // Calcular rotación basada en el desplazamiento
+    val maxRotation = 15f
+    rotation = (offsetX / swipeThreshold) * maxRotation
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFFE3F2FD), Color(0xFFBBDEFB))
+            .width(320.dp)
+            .height(480.dp)
+            .offset { IntOffset(offsetX.toInt(), 0) }
+            .rotate(rotation)
+            .shadow(16.dp, RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(32.dp))
+            .background(Color.White)
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        offsetX += dragAmount.x
+                    },
+                    onDragEnd = {
+                        when {
+                            offsetX > swipeThreshold -> {
+                                onSwipeRight()
+                                offsetX = 0f
+                                rotation = 0f
+                            }
+                            offsetX < -swipeThreshold -> {
+                                onSwipeLeft()
+                                offsetX = 0f
+                                rotation = 0f
+                            }
+                            else -> {
+                                offsetX = 0f
+                                rotation = 0f
+                            }
+                        }
+                    }
                 )
-            )
+            },
+        contentAlignment = Alignment.Center
     ) {
-        // Botón de Configuración arriba a la derecha
-        IconButton(
-            onClick = onConfigClick,
+        Column(
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-        ) {
-            Icon(Icons.Default.Settings, contentDescription = "Config")
-        }
-
-        // Card con la mascota
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .padding(32.dp)
-                .align(Alignment.Center),
-            elevation = CardDefaults.cardElevation(12.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(pets[currentPet].second, fontSize = 64.sp)
-                Text(pets[currentPet].first, fontSize = 28.sp)
-            }
-        }
-
-        // Botones de acción tipo Tinder
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .fillMaxSize()
                 .padding(24.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
-                onClick = {
-                    currentPet = (currentPet + 1) % pets.size
-                },
-                colors = ButtonDefaults.buttonColors(Color.Red),
-                shape = CircleShape
+            // Emoji/Imagen con fondo decorativo
+            Box(
+                modifier = Modifier
+                    .size(140.dp)
+                    .background(petColor.copy(alpha = 0.2f), CircleShape)
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text("❌", fontSize = 24.sp)
+                Text(petEmoji, fontSize = 64.sp)
             }
 
-            Button(
-                onClick = {
-                    // Guardar Match
-                },
-                colors = ButtonDefaults.buttonColors(Color.Green),
-                shape = CircleShape
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Nombre y edad
+            Text(
+                "$petName, $petAge",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Dueño
+            Text(
+                "Dueño: $petOwner",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.DarkGray
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Tags
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("❤️", fontSize = 24.sp)
+                petTags.forEach { tag ->
+                    Card(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .height(28.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = petColor.copy(alpha = 0.1f)),
+                        elevation = CardDefaults.cardElevation(2.dp)
+                    ) {
+                        Text(
+                            text = tag,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = petColor
+                        )
+                    }
+                }
             }
 
-            Button(
-                onClick = onMatchesClick,
-                colors = ButtonDefaults.buttonColors(Color.Magenta),
-                shape = CircleShape
-            ) {
-                Text("💬", fontSize = 24.sp)
-            }
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
-                onClick = onProfileClick,
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                shape = CircleShape
+            // Descripción
+            Text(
+                petDescription,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                lineHeight = 20.sp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Información adicional
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text("👤", fontSize = 24.sp)
+                InfoItem(icon = "📍", text = petDistance)
+                InfoItem(icon = "⚡", text = "Activo")
+                InfoItem(icon = "❤️", text = "Saludable")
+            }
+        }
+
+        // Indicadores de swipe
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(abs(offsetX) / swipeThreshold * 0.8f)
+        ) {
+            if (offsetX > 0) {
+                // Swipe right - Like
+                Text(
+                    "LIKE",
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 32.dp)
+                        .rotate(-15f),
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50)
+                )
+            } else if (offsetX < 0) {
+                // Swipe left - Nope
+                Text(
+                    "NOPE",
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 32.dp)
+                        .rotate(15f),
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF5252)
+                )
             }
         }
     }
@@ -186,7 +275,7 @@ fun ActionButton(icon: String, color: Color, onClick: () -> Unit) {
             .size(80.dp)
             .scale(scale)
             .clip(CircleShape)
-            .background(color=PinkBackground)
+            .background(color = PinkBackground)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
@@ -200,6 +289,21 @@ fun ActionButton(icon: String, color: Color, onClick: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Text(icon, fontSize = 28.sp, color = Color.White)
+    }
+}
+@Composable
+fun InfoItem(icon: String, text: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = icon,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.Gray
+        )
     }
 }
 @Composable
@@ -247,5 +351,18 @@ fun SwipeableCard(
 @Composable
 fun PetScreen(){
 
+    PetSwipeScreen(
+        onProfileClick = {},
+        onConfigClick = {},
+        onMatchesClick = {}
+    )
 
+}
+
+@Composable
+fun PetSwipeScreen(
+    onProfileClick: () -> Unit,
+    onConfigClick: () -> Unit,
+    onMatchesClick: () -> Unit
+) {
 }
