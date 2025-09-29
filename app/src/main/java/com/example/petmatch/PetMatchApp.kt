@@ -26,25 +26,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-<<<<<<< HEAD
-=======
-import com.example.petapp.ui.screens.MascotaScreen
-import com.example.petapp.ui.screens.RegistroUsuarioScreen
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
 
 // Colores personalizados
 val PinkBackground = Color(0xFFFFB3BA)
 val DarkText = Color(0xFF2D2D2D)
 
-<<<<<<< HEAD
 // Pantalla principal con navegación
 @Composable
 fun PetMatchApp() {
-=======
-// Pantalla principal con navegación simplificada
-@Composable
-fun SimplePetMatchApp() {
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
     val navController = rememberNavController()
 
     NavHost(
@@ -57,44 +46,28 @@ fun SimplePetMatchApp() {
         composable("login") {
             LoginScreen(navController)
         }
-<<<<<<< HEAD
         composable("register") {
             RegistroUsuarioScreen(
                 onCancelClick = { navController.popBackStack() },
                 onNextClick = { navController.navigate("mascota") }
             )
         }
-=======
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
         composable("mascota") {
             MascotaScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
-<<<<<<< HEAD
         composable(route="swipeMenu") {
 
-            swipeMenu(
 
 
-            )
 
-=======
-        composable("registro") {
-            RegistroUsuarioScreen(
-                onCancelClick = { navController.popBackStack() },
-                onNextClick = { navController.navigate("mascota") }
-            )
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
+
         }
     }
 }
 
-<<<<<<< HEAD
 // Pantalla de bienvenida (Primera imagen)
-=======
-// Pantalla de bienvenida
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
 @Composable
 fun WelcomeScreen(navController: NavController) {
     Column(
@@ -134,11 +107,7 @@ fun WelcomeScreen(navController: NavController) {
 
         // Botón Crear una Cuenta
         Button(
-<<<<<<< HEAD
             onClick = { navController.navigate("register") },
-=======
-            onClick = { navController.navigate("registro") },
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -147,11 +116,7 @@ fun WelcomeScreen(navController: NavController) {
                 contentColor = DarkText
             ),
             shape = RoundedCornerShape(8.dp),
-<<<<<<< HEAD
             border = BorderStroke(2.dp, DarkText)
-=======
-            border = androidx.compose.foundation.BorderStroke(2.dp, DarkText)
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
         ) {
             Text(
                 text = "Crear una Cuenta",
@@ -173,11 +138,7 @@ fun WelcomeScreen(navController: NavController) {
                 contentColor = DarkText
             ),
             shape = RoundedCornerShape(8.dp),
-<<<<<<< HEAD
             border = BorderStroke(2.dp, DarkText)
-=======
-            border = androidx.compose.foundation.BorderStroke(2.dp, DarkText)
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
         ) {
             Text(
                 text = "Iniciar Sesion",
@@ -189,11 +150,7 @@ fun WelcomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f))
 
         // Barra de navegación inferior
-<<<<<<< HEAD
         BottomNavigationBar(
-=======
-        SimpleBottomNavigationBar(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
             onBackClick = { /* No action for welcome screen */ },
             onHomeClick = { /* Already at home */ },
             onMenuClick = { /* Menu action */ }
@@ -201,11 +158,7 @@ fun WelcomeScreen(navController: NavController) {
     }
 }
 
-<<<<<<< HEAD
 // Pantalla de inicio de sesión (Segunda imagen)
-=======
-// Pantalla de inicio de sesión
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
 @Composable
 fun LoginScreen(navController: NavController) {
     var usuario by remember { mutableStateOf("") }
@@ -250,21 +203,13 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-<<<<<<< HEAD
             CustomTextField(
-=======
-            SimpleTextField(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                 label = "Usuario",
                 value = usuario,
                 onValueChange = { usuario = it }
             )
 
-<<<<<<< HEAD
             CustomTextField(
-=======
-            SimpleTextField(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                 label = "Contraseña",
                 value = contrasena,
                 onValueChange = { contrasena = it }
@@ -273,34 +218,10 @@ fun LoginScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-<<<<<<< HEAD
         // Botones de inicio de sesión
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
-=======
-        // Botón de iniciar sesión normal
-        Button(
-            onClick = { navController.navigate("mascota") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DarkText,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text("Iniciar Sesión")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Botones de redes sociales
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
         ) {
             // Botón Google
             OutlinedButton(
@@ -312,11 +233,7 @@ fun LoginScreen(navController: NavController) {
                     containerColor = Color.White,
                     contentColor = DarkText
                 ),
-<<<<<<< HEAD
                 border = BorderStroke(1.dp, DarkText),
-=======
-                border = androidx.compose.foundation.BorderStroke(1.dp, DarkText),
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Iniciar Sesion con Google")
@@ -332,11 +249,7 @@ fun LoginScreen(navController: NavController) {
                     containerColor = Color.White,
                     contentColor = DarkText
                 ),
-<<<<<<< HEAD
                 border = BorderStroke(1.dp, DarkText),
-=======
-                border = androidx.compose.foundation.BorderStroke(1.dp, DarkText),
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Iniciar Sesion con Facebook")
@@ -346,11 +259,7 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f))
 
         // Barra de navegación inferior
-<<<<<<< HEAD
         BottomNavigationBar(
-=======
-        SimpleBottomNavigationBar(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
             onBackClick = { navController.popBackStack() },
             onHomeClick = { navController.navigate("welcome") },
             onMenuClick = { /* Menu action */ }
@@ -358,7 +267,6 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-<<<<<<< HEAD
 // Las funciones MascotaScreen y RegistroUsuarioScreen que ya tienes
 @Composable
 fun MascotaScreen(
@@ -711,11 +619,6 @@ fun RegistroUsuarioScreen(
 
 @Composable
 fun CustomTextField(
-=======
-// TextField simplificado para evitar conflictos
-@Composable
-fun SimpleTextField(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
@@ -743,11 +646,7 @@ fun SimpleTextField(
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-<<<<<<< HEAD
                 textStyle = TextStyle(
-=======
-                textStyle = androidx.compose.ui.text.TextStyle(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                     color = DarkText,
                     fontSize = 16.sp
                 )
@@ -756,14 +655,8 @@ fun SimpleTextField(
     }
 }
 
-<<<<<<< HEAD
 @Composable
 fun BottomNavigationBar(
-=======
-// Barra de navegación simplificada para evitar conflictos
-@Composable
-fun SimpleBottomNavigationBar(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
     onBackClick: () -> Unit,
     onHomeClick: () -> Unit,
     onMenuClick: () -> Unit
@@ -772,24 +665,14 @@ fun SimpleBottomNavigationBar(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-<<<<<<< HEAD
         NavigationButton(text = "←", onClick = onBackClick)
         NavigationButton(text = "🏠", onClick = onHomeClick)
         NavigationButton(text = "☰", onClick = onMenuClick)
-=======
-        SimpleNavigationButton(text = "←", onClick = onBackClick)
-        SimpleNavigationButton(text = "🏠", onClick = onHomeClick)
-        SimpleNavigationButton(text = "☰", onClick = onMenuClick)
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
     }
 }
 
 @Composable
-<<<<<<< HEAD
 fun NavigationButton(
-=======
-fun SimpleNavigationButton(
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
     text: String,
     onClick: () -> Unit
 ) {

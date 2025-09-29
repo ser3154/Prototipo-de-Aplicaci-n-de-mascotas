@@ -246,6 +246,6 @@ fun SwipeableCard(
 @Preview(showBackground = true)
 @Composable
 fun PetScreen(){
-    PetSwipeScreen()
+
 
 }

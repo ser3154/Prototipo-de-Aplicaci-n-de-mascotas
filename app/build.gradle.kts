@@ -55,10 +55,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-<<<<<<< HEAD
+
     implementation(libs.androidx.compose.animation.core)
-=======
->>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
