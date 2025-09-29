@@ -8,7 +8,10 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.9.4"
 activityCompose = "1.11.0"
 composeBom = "2024.09.00"
+<<<<<<< HEAD
 animationCore = "1.9.2"
+=======
+>>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,7 +28,10 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+<<<<<<< HEAD
 androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
+=======
+>>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

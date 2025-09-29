@@ -28,7 +28,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+<<<<<<< HEAD
                     PetMatchApp()
+=======
+                    SimplePetMatchApp()
+>>>>>>> f80a6ccfb1c6ff1a6b6a0ead81bcd87cf50c75a7
                 }
             }
         }
