@@ -350,11 +350,28 @@ fun SwipeableCard(
 @Preview(showBackground = true)
 @Composable
 fun PetScreen(){
+<<<<<<< HEAD
 
     PetSwipeScreen(
         onProfileClick = {},
         onConfigClick = {},
         onMatchesClick = {}
+=======
+    val navController = rememberNavController()
+    PetSwipeScreen(
+        onConfigClick = {
+            // Aquí pones navegación a Configuración
+            navController.navigate("config")
+        },
+        onMatchesClick = {
+            // Aquí pones navegación a Matches
+            navController.navigate("matches")
+        },
+        onProfileClick = {
+            // Aquí pones navegación a Perfil
+            navController.navigate("profile")
+        }
+>>>>>>> fdd4015b9dc34e451646e0305b50699e196c9a70
     )
 
 }
